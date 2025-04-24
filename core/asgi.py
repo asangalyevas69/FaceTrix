@@ -4,11 +4,7 @@ ASGI config for core project.
 It exposes the ASGI callable as a module-level variable named ``application``.
 
 For more information on this file, see
-<<<<<<< HEAD
-https://docs.djangoproject.com/en/5.1/howto/deployment/asgi/
-=======
 https://docs.djangoproject.com/en/5.2/howto/deployment/asgi/
->>>>>>> b0f534d (Added models, serializer, view, and URL routes)
 """
 
 import os
