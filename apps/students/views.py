@@ -95,3 +95,57 @@ class GetStudentReportAPIView(APIView):
             "present": present,
             "absent": absent
         })
+
+"""Отчёт по преподователю через ID"""
+class GetTeacherInfoAPIView(APIView):
+    def get(self, request, login_code):
+        teacher = Teacher.objects.filter(login_code=login_code).first()
+
+        return Response({
+            "teacher": teacher.name,
+            "number": teacher.number,
+            "login_code": teacher.login_code
+        })
+    
+
+
+# class TeacherGroupsAPIView(APIView):
+#     def get(self, request, login_code):
+#         teacher = Teacher.objects.filter(login_code=login_code).first()
+#         groups = Group.objects.filter(lesson__teacher=teacher).distinct()
+#         group_list = [{"id": group.id, "name": group.group_name} for group in groups]
+
+#         return Response(group_list)
+    
+
+class LastLessonAttendanceAPIView(APIView):
+    def get(self, request, group_id):
+        lesson = Lesson.objects.filter(group_id=group_id).order_by('-time').first()
+        attendance = Attendance.objects.filter(lesson=lesson).select_related('student')
+        result = []
+        for a in attendance:
+            result.append({
+                "student": a.student.full_name,
+                "was_present": a.attendance,
+                "time": a.time
+            })
+
+        return Response({
+            "subject": lesson.subject_name,
+            "datetime": lesson.time,
+            "attendance": result
+        })
+    
+
+class TeacherGroupsAPIView(APIView):
+    def get(self, request, login_code):
+        teacher = Teacher.objects.filter(login_code=login_code).first()
+        lessons = Lesson.objects.filter(teacher=teacher).select_related('group')
+        groups = {lesson.group for lesson in lessons}
+
+        return Response({
+            "groups": [
+                {"id": group.id, "name": group.group_name}
+                for group in groups
+            ]
+        })

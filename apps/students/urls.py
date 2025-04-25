@@ -13,4 +13,7 @@ urlpatterns = [
     path('api/report/<int:student_id>/', views.ParentReportAPIView.as_view()),
     path('api/parenttg/<str:login_code>/', views.GetParentReportAPIView.as_view()),
     path('api/studenttg/<str:login_code>/', views.GetStudentReportAPIView.as_view()),
+    path('api/teachertg/<str:login_code>/', views.GetTeacherInfoAPIView.as_view()),
+    path('api/teacher-groups/<str:login_code>/', views.TeacherGroupsAPIView.as_view()),
+    path('api/group-attendance/<int:group_id>/', views.LastLessonAttendanceAPIView.as_view()),
 ]

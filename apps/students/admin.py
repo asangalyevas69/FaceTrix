@@ -18,12 +18,13 @@ class StudentAdmin(admin.ModelAdmin):
 
 @admin.register(Group)
 class GroupAdmin(admin.ModelAdmin):
-    info = ['group_name']
+    info = ['group_name', 'teacher']
 
 
 @admin.register(Teacher)
 class TeacherAdmin(admin.ModelAdmin):
     list_display = ['name']
+    readonly_fields = ['login_code']
 
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):

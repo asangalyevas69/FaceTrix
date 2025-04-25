@@ -9,6 +9,8 @@ class Group(models.Model):
     Model for group
     """
     group_name = models.CharField(max_length=50)
+    teacher = models.ForeignKey("Teacher", on_delete=models.CASCADE, related_name="groups", null=True)
+
 
     def __str__(self):
         return self.group_name
@@ -38,11 +40,21 @@ class Teacher(models.Model):
     models for Teacher
     """
     name = models.CharField(max_length=100)
+    number = models.CharField(max_length=15, default="0700000000")
+    login_code = models.CharField(max_length=6, unique=True, blank=True)
+
+    def save(self, *args, **kwargs):
+            if not self.login_code:
+                while True:
+                    code = str(random.randint(100000, 999999))
+                    if not Teacher.objects.filter(login_code=code).exists():
+                        self.login_code = code
+                        break
+            super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
-
-
+    
     
 class Lesson(models.Model):
     """
@@ -94,8 +106,6 @@ class Parent(models.Model):
         if not self.login_code:
             self.login_code = str(random.randint(100000, 999999))
         super().save(*args, **kwargs)
-
-
 
 
 
